@@ -2,13 +2,12 @@ package com.example.demo.controller;
 
 import com.example.demo.model.ticketService;
 
-public class ticketController {
+public class TicketController {
 
     private final ticketService ticketService;
 
-    public ticketController(ticketService ticketService) {
+    public TicketController(ticketService ticketService) {
         this.ticketService = ticketService;
     }
-    
-    
+
 }
