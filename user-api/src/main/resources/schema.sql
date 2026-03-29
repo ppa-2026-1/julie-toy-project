@@ -29,22 +29,26 @@ CREATE TABLE IF NOT EXISTS profiles (
 );
 
 CREATE TABLE IF NOT EXISTS ticket (
-id INTEGER  PRIMARY KEY AUTOINCREMENT,
-acao VARCHAR(50) NOT NULL,
-objeto VARCHAR(50) NOT NULL,
-criador TEXT NOT NULL,
-destinatario TEXT,
-responsavel TEXT,
-create_at TIMESTAMP NOT NULL,
-update_at TIMESTAMP NOT NULL,
-status VARCHAR(20) CHECK (status IN ('pendente', 'andamento', 'resolvido', 'cancelado')) NOT NULL,
-FOREIGN KEY(criador_id) REFERENCES users_id,
-FOREIGN KEY(destinatario_id) REFERENCES users_id,
-FOREIGN KEY(responsavel_id) REFERENCES users_id
+    id           INTEGER      PRIMARY KEY AUTOINCREMENT,
+    acao         VARCHAR(255) NOT NULL,
+    objeto       VARCHAR(255) NOT NULL,
+    detalhes     TEXT,
+    criador      VARCHAR(255) NOT NULL,
+    destinatario VARCHAR(255) NOT NULL,
+    responsavel  VARCHAR(255),
+    status       VARCHAR(20)  NOT NULL CHECK (status IN ('PENDENTE', 'ANDAMENTO', 'RESOLVIDO', 'CANCELADO')),
+    motivo       TEXT,
+    created_at   TIMESTAMP    NOT NULL,
+    updated_at   TIMESTAMP    NOT NULL
 );
 
-CREATE TABLE IF NOT EXISTS ticket_observadores(
-ticket_id INTEGER PRIMARY KEY AUTOINCREMENT,
-email VARCHAR(100) NOT NULL,
-FOREIGN KEY(ticket_id) REFERENCES ticket(id)
+CREATE TABLE IF NOT EXISTS ticket_observadores (
+    ticket_id INTEGER      NOT NULL,
+    email     VARCHAR(255) NOT NULL,
+    PRIMARY KEY (ticket_id, email),
+    FOREIGN KEY (ticket_id) REFERENCES ticket(id)
 );
+
+INSERT OR IGNORE INTO roles (name) VALUES ('ROLE_USER');
+INSERT OR IGNORE INTO roles (name) VALUES ('ROLE_GUEST');
+INSERT OR IGNORE INTO roles (name) VALUES ('ROLE_VIEWER');

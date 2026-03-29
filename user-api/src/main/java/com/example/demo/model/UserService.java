@@ -78,6 +78,7 @@ public class UserService {
         if (additionalRoles.size() != newUser.roles().size()) {
             throw new IllegalArgumentException("Alguns papéis não existem");
         }
+        roles.addAll(additionalRoles);
 
         if (roles.isEmpty()) {
             throw new IllegalArgumentException("O usuário deve ter pelo menos um papel");

@@ -91,3 +91,149 @@ Content-Type: application/json
     ],
     "company": "luffy inc"
 }
+
+
+# TICKET API ================================================================
+
+### Listar todos os tickets
+GET /api/v1/tickets HTTP/1.1
+Host: {{host}}
+Accept: application/json
+
+
+### Buscar ticket por id
+GET /api/v1/tickets/1 HTTP/1.1
+Host: {{host}}
+Accept: application/json
+
+
+### Criar ticket válido — destinatário diferente do criador, com observadores
+# @name = createTicket
+POST /api/v1/tickets HTTP/1.1
+Host: {{host}}
+Content-Type: application/json
+
+{
+    "acao": "Aprovar",
+    "objeto": "Proposta comercial",
+    "detalhes": "Proposta enviada pelo cliente em 10/07. Aguarda aprovação do gestor.",
+    "criador": "julie@gmail.com",
+    "destinatario": "leda@gmail.com",
+    "observadores": ["batata@gmail.com"]
+}
+
+
+### Criar ticket válido — destinatário omitido (será igual ao criador)
+POST /api/v1/tickets HTTP/1.1
+Host: {{host}}
+Content-Type: application/json
+
+{
+    "acao": "Revisar",
+    "objeto": "Contrato de serviço",
+    "criador": "julie@gmail.com"
+}
+
+
+### Criar ticket válido — sem detalhes e sem observadores
+POST /api/v1/tickets HTTP/1.1
+Host: {{host}}
+Content-Type: application/json
+
+{
+    "acao": "Validar",
+    "objeto": "Relatório mensal",
+    "criador": "leda@gmail.com",
+    "destinatario": "julie@gmail.com"
+}
+
+
+### [INVÁLIDO] Criar ticket sem ação
+POST /api/v1/tickets HTTP/1.1
+Host: {{host}}
+Content-Type: application/json
+
+{
+    "objeto": "Proposta comercial",
+    "criador": "julie@gmail.com"
+}
+
+
+### [INVÁLIDO] Criar ticket sem objeto
+POST /api/v1/tickets HTTP/1.1
+Host: {{host}}
+Content-Type: application/json
+
+{
+    "acao": "Aprovar",
+    "criador": "julie@gmail.com"
+}
+
+
+### [INVÁLIDO] Criar ticket sem criador
+POST /api/v1/tickets HTTP/1.1
+Host: {{host}}
+Content-Type: application/json
+
+{
+    "acao": "Aprovar",
+    "objeto": "Proposta comercial"
+}
+
+
+### Colocar ticket em andamento (seta responsável)
+PATCH /api/v1/tickets/1/status HTTP/1.1
+Host: {{host}}
+Content-Type: application/json
+
+{
+    "status": "ANDAMENTO",
+    "responsavel": "leda@gmail.com"
+}
+
+
+### Resolver ticket
+PATCH /api/v1/tickets/1/status HTTP/1.1
+Host: {{host}}
+Content-Type: application/json
+
+{
+    "status": "RESOLVIDO"
+}
+
+
+### Cancelar ticket com motivo
+PATCH /api/v1/tickets/1/status HTTP/1.1
+Host: {{host}}
+Content-Type: application/json
+
+{
+    "status": "CANCELADO",
+    "motivo": "Cliente desistiu da solicitação."
+}
+
+
+### [INVÁLIDO] Colocar em andamento sem responsável
+PATCH /api/v1/tickets/1/status HTTP/1.1
+Host: {{host}}
+Content-Type: application/json
+
+{
+    "status": "ANDAMENTO"
+}
+
+
+### [INVÁLIDO] Cancelar sem motivo
+PATCH /api/v1/tickets/1/status HTTP/1.1
+Host: {{host}}
+Content-Type: application/json
+
+{
+    "status": "CANCELADO"
+}
+
+
+### [INVÁLIDO] Buscar ticket inexistente
+GET /api/v1/tickets/999 HTTP/1.1
+Host: {{host}}
+Accept: application/json
