@@ -237,3 +237,47 @@ Content-Type: application/json
 GET /api/v1/tickets/999 HTTP/1.1
 Host: {{host}}
 Accept: application/json
+
+
+# VULNERABILITY REPORTS API ================================================================
+
+### Listar primeira página (padrão: page=1, size=10)
+GET /api/v1/vulnerability-reports HTTP/1.1
+Host: {{host}}
+Accept: application/json
+
+
+### Listar segunda página com 10 itens
+GET /api/v1/vulnerability-reports?page=2&size=10 HTTP/1.1
+Host: {{host}}
+Accept: application/json
+
+
+### Listar terceira página com 10 itens
+GET /api/v1/vulnerability-reports?page=3&size=10 HTTP/1.1
+Host: {{host}}
+Accept: application/json
+
+
+### Listar com size 5 (mais páginas)
+GET /api/v1/vulnerability-reports?page=1&size=5 HTTP/1.1
+Host: {{host}}
+Accept: application/json
+
+
+### [INVÁLIDO] Page negativa
+GET /api/v1/vulnerability-reports?page=-1&size=10 HTTP/1.1
+Host: {{host}}
+Accept: application/json
+
+
+### [INVÁLIDO] Size zero
+GET /api/v1/vulnerability-reports?page=1&size=0 HTTP/1.1
+Host: {{host}}
+Accept: application/json
+
+
+### [INVÁLIDO] Size acima do limite (1000)
+GET /api/v1/vulnerability-reports?page=1&size=1001 HTTP/1.1
+Host: {{host}}
+Accept: application/json
