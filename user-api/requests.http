@@ -239,7 +239,7 @@ Host: {{host}}
 Accept: application/json
 
 
-# Trabalho 02 ================================================================
+# Trabalho 02 =========================================================
 
 ### Listar primeira página (padrão: page=1, size=10)
 GET /api/v1/vulnerability-reports HTTP/1.1
