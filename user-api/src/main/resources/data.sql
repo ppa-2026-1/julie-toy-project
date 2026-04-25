@@ -1,12 +1,12 @@
 DELETE FROM vulnerabilities;
 DELETE FROM vulnerability_reports;
-DELETE FROM profiles;
-DELETE FROM users_roles;
 DELETE FROM users;
 
+
+
 INSERT INTO users (id, handle, email, password, created_at) VALUES
-(1, 'alice', 'alice@example.com', '$2a$10$placeholder', '2024-01-01 09:00:00'),
-(2, 'bob', 'bob@example.com', '$2a$10$placeholder', '2024-01-01 09:00:00');
+(1, 'ana', 'ana@example.com', '$2a$10$placeholder', '2024-01-01 09:00:00'),
+(2, 'rob', 'rob@example.com', '$2a$10$placeholder', '2024-01-01 09:00:00');
 
 INSERT INTO vulnerability_reports (id, user_id, system_under_test, created_at, updated_at) VALUES
 (1, 1, 'Sistema A', '2024-01-01 10:00:00', '2024-01-01 10:00:00'),
