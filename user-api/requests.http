@@ -93,6 +93,36 @@ Content-Type: application/json
 }
 
 
+
+
+# AUTH API ================================================================
+
+### Fazer login com handle
+# Primeiro crie um usuário válido e depois use o handle/senha dele aqui.
+# @name = login
+POST /api/v1/auth/login HTTP/1.1
+Host: {{host}}
+Content-Type: application/json
+
+{
+    "handle": "papas",
+    "password": "1234RT56"
+}
+
+
+### Listar usuários usando o token retornado no login
+GET /api/v1/users HTTP/1.1
+Host: {{host}}
+Accept: application/json
+Authorization: Bearer {{login.response.body.token}}
+
+
+### Fazer logout
+POST /api/v1/auth/logout HTTP/1.1
+Host: {{host}}
+Authorization: Bearer {{login.response.body.token}}
+
+
 # TICKET API ================================================================
 
 ### Listar todos os tickets

@@ -1,3 +1,4 @@
+DELETE FROM auth_tokens;
 DELETE FROM vulnerabilities;
 DELETE FROM vulnerability_reports;
 DELETE FROM users;

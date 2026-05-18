@@ -7,6 +7,17 @@ CREATE TABLE IF NOT EXISTS users (
     created_at TIMESTAMP
 );
 
+
+CREATE TABLE IF NOT EXISTS auth_tokens (
+    id         INTEGER      PRIMARY KEY AUTOINCREMENT,
+    token      VARCHAR(255) UNIQUE NOT NULL,
+    user_id    INTEGER      NOT NULL,
+    created_at TIMESTAMP    NOT NULL,
+    expires_at TIMESTAMP    NOT NULL,
+    revoked_at TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(id)
+);
+
 CREATE TABLE IF NOT EXISTS roles (
     id   INTEGER      PRIMARY KEY AUTOINCREMENT,
     name VARCHAR(255) UNIQUE NOT NULL
