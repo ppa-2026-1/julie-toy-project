@@ -1,23 +1,28 @@
-# USER API ================================================================
-
 @host=localhost:8080
 
-### TODOS OS USUÁRIOS
-GET /api/v1/users HTTP/1.1
-Host: localhost:8080
-Accept: application/json
+# AUTH API ================================================================
+
+### Login
+# @name login
+POST /auth/login HTTP/1.1
+Host: {{host}}
+Content-Type: application/json
+
+{
+    "handle": "papas"
+}
 
 
-### Get all users
-# @name= getAllUsers
-
+### Listar usuários autenticado
 GET /api/v1/users HTTP/1.1
 Host: {{host}}
 Accept: application/json
+Authorization: Bearer {{login.response.body.token}}
 
-### Create a new valid User
-# @name = createNewUser
 
+# USER API ================================================================
+
+### Criar usuário papas
 POST /api/v1/users HTTP/1.1
 Host: {{host}}
 Content-Type: application/json
@@ -34,30 +39,7 @@ Content-Type: application/json
 }
 
 
-### Try and create an invalid User
-# @name = tryCreateInvalidUser
-
-POST /api/v1/users HTTP/1.1
-Host: {{host}}
-Content-Type: application/json
-
-{
-    "email": "batata@potato.com",
-    "password": "1234",
-    "handle": "papas",
-    "name": "Kartofel",
-    "roles": [
-        "ROLE_USER"
-    ],
-    "company": "potato inc"
-}
-
-
-
-
-### Create a new valid User
-# @name = createNewUser
-
+### Criar usuário julie
 POST /api/v1/users HTTP/1.1
 Host: {{host}}
 Content-Type: application/json
@@ -74,9 +56,7 @@ Content-Type: application/json
 }
 
 
-### Create a new valid User
-# @name = createNewUser
-
+### Criar usuário leda
 POST /api/v1/users HTTP/1.1
 Host: {{host}}
 Content-Type: application/json
@@ -93,70 +73,45 @@ Content-Type: application/json
 }
 
 
-
-
-# AUTH API ================================================================
-
-### Fazer login com handle
-# Primeiro crie um usuário válido e depois use o handle/senha dele aqui.
-# @name = login
-POST /api/v1/auth/login HTTP/1.1
-Host: {{host}}
-Content-Type: application/json
-
-{
-    "handle": "papas",
-    "password": "1234RT56"
-}
-
-
-### Listar usuários usando o token retornado no login
-GET /api/v1/users HTTP/1.1
-Host: {{host}}
-Accept: application/json
-Authorization: Bearer {{login.response.body.token}}
-
-
-### Fazer logout
-POST /api/v1/auth/logout HTTP/1.1
-Host: {{host}}
-Authorization: Bearer {{login.response.body.token}}
-
-
 # TICKET API ================================================================
 
 ### Listar todos os tickets
 GET /api/v1/tickets HTTP/1.1
 Host: {{host}}
 Accept: application/json
+Authorization: Bearer {{login.response.body.token}}
 
 
 ### Buscar ticket por id
 GET /api/v1/tickets/1 HTTP/1.1
 Host: {{host}}
 Accept: application/json
+Authorization: Bearer {{login.response.body.token}}
 
 
-### Criar ticket válido — destinatário diferente do criador, com observadores
-# @name = createTicket
+### Criar ticket válido
 POST /api/v1/tickets HTTP/1.1
 Host: {{host}}
 Content-Type: application/json
+Authorization: Bearer {{login.response.body.token}}
 
 {
     "acao": "Aprovar",
     "objeto": "Proposta comercial",
-    "detalhes": "Proposta enviada pelo cliente em 10/07. Aguarda aprovação do gestor.",
+    "detalhes": "Proposta enviada pelo cliente em 10/07.",
     "criador": "julie@gmail.com",
     "destinatario": "leda@gmail.com",
-    "observadores": ["batata@gmail.com"]
+    "observadores": [
+        "batata@gmail.com"
+    ]
 }
 
 
-### Criar ticket válido — destinatário omitido (será igual ao criador)
+### Criar ticket simples
 POST /api/v1/tickets HTTP/1.1
 Host: {{host}}
 Content-Type: application/json
+Authorization: Bearer {{login.response.body.token}}
 
 {
     "acao": "Revisar",
@@ -165,56 +120,11 @@ Content-Type: application/json
 }
 
 
-### Criar ticket válido — sem detalhes e sem observadores
-POST /api/v1/tickets HTTP/1.1
-Host: {{host}}
-Content-Type: application/json
-
-{
-    "acao": "Validar",
-    "objeto": "Relatório mensal",
-    "criador": "leda@gmail.com",
-    "destinatario": "julie@gmail.com"
-}
-
-
-### [INVÁLIDO] Criar ticket sem ação
-POST /api/v1/tickets HTTP/1.1
-Host: {{host}}
-Content-Type: application/json
-
-{
-    "objeto": "Proposta comercial",
-    "criador": "julie@gmail.com"
-}
-
-
-### [INVÁLIDO] Criar ticket sem objeto
-POST /api/v1/tickets HTTP/1.1
-Host: {{host}}
-Content-Type: application/json
-
-{
-    "acao": "Aprovar",
-    "criador": "julie@gmail.com"
-}
-
-
-### [INVÁLIDO] Criar ticket sem criador
-POST /api/v1/tickets HTTP/1.1
-Host: {{host}}
-Content-Type: application/json
-
-{
-    "acao": "Aprovar",
-    "objeto": "Proposta comercial"
-}
-
-
-### Colocar ticket em andamento (seta responsável)
+### Colocar ticket em andamento
 PATCH /api/v1/tickets/1/status HTTP/1.1
 Host: {{host}}
 Content-Type: application/json
+Authorization: Bearer {{login.response.body.token}}
 
 {
     "status": "ANDAMENTO",
@@ -226,88 +136,35 @@ Content-Type: application/json
 PATCH /api/v1/tickets/1/status HTTP/1.1
 Host: {{host}}
 Content-Type: application/json
+Authorization: Bearer {{login.response.body.token}}
 
 {
     "status": "RESOLVIDO"
 }
 
 
-### Cancelar ticket com motivo
+### Cancelar ticket
 PATCH /api/v1/tickets/1/status HTTP/1.1
 Host: {{host}}
 Content-Type: application/json
+Authorization: Bearer {{login.response.body.token}}
 
 {
     "status": "CANCELADO",
-    "motivo": "Cliente desistiu da solicitação."
+    "motivo": "Cliente desistiu."
 }
 
 
-### [INVÁLIDO] Colocar em andamento sem responsável
-PATCH /api/v1/tickets/1/status HTTP/1.1
+# LOGOUT ================================================================
+
+### Logout
+POST /auth/logout HTTP/1.1
 Host: {{host}}
-Content-Type: application/json
-
-{
-    "status": "ANDAMENTO"
-}
+Authorization: Bearer {{login.response.body.token}}
 
 
-### [INVÁLIDO] Cancelar sem motivo
-PATCH /api/v1/tickets/1/status HTTP/1.1
-Host: {{host}}
-Content-Type: application/json
-
-{
-    "status": "CANCELADO"
-}
-
-
-### [INVÁLIDO] Buscar ticket inexistente
-GET /api/v1/tickets/999 HTTP/1.1
+### Testar token após logout
+GET /api/v1/tickets HTTP/1.1
 Host: {{host}}
 Accept: application/json
-
-
-# Trabalho 02 =========================================================
-
-### Listar primeira página (padrão: page=1, size=10)
-GET /api/v1/vulnerability-reports HTTP/1.1
-Host: {{host}}
-Accept: application/json
-
-
-### Listar segunda página com 10 itens
-GET /api/v1/vulnerability-reports?page=2&size=10 HTTP/1.1
-Host: {{host}}
-Accept: application/json
-
-
-### Listar terceira página com 10 itens
-GET /api/v1/vulnerability-reports?page=3&size=10 HTTP/1.1
-Host: {{host}}
-Accept: application/json
-
-
-### Listar com size 5 (mais páginas)
-GET /api/v1/vulnerability-reports?page=1&size=5 HTTP/1.1
-Host: {{host}}
-Accept: application/json
-
-
-### [INVÁLIDO] Page negativa
-GET /api/v1/vulnerability-reports?page=-1&size=10 HTTP/1.1
-Host: {{host}}
-Accept: application/json
-
-
-### [INVÁLIDO] Size zero
-GET /api/v1/vulnerability-reports?page=1&size=0 HTTP/1.1
-Host: {{host}}
-Accept: application/json
-
-
-### [INVÁLIDO] Size acima do limite (1000)
-GET /api/v1/vulnerability-reports?page=1&size=1001 HTTP/1.1
-Host: {{host}}
-Accept: application/json
+Authorization: Bearer {{login.response.body.token}}
