@@ -52,17 +52,20 @@ public class AuthFilter extends OncePerRequestFilter {
             response.getWriter().write("Header Authorization deve usar Bearer token");
             return;
         }
-
         String token = authorization.substring("Bearer ".length()).trim();
 
         try {
-            String handle = authService.validateTokenAndGetHandle(token);
+            String handle = authService.validateToken(token);
+
             request.setAttribute("authenticatedUser", handle);
             filterChain.doFilter(request, response);
+
         } catch (IllegalArgumentException ex) {
-            response.setStatus(HttpStatus.UNAUTHORIZED.value());
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             response.setContentType("text/plain;charset=UTF-8");
             response.getWriter().write(ex.getMessage());
         }
+        
+       
     }
 }
