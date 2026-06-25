@@ -1,0 +1,42 @@
+### Criar usuário e gerar ticket automaticamente
+POST http://localhost:8080/api/v1/users
+Content-Type: application/json
+
+{
+  "name": "Maria Silva",
+  "handle": "maria",
+  "email": "maria@example.com",
+  "password": "Senha123",
+  "company": "IFRS",
+  "type": "FREE",
+  "roles": []
+}
+
+### Listar usuários
+GET http://localhost:8080/api/v1/users
+
+### Criar ticket diretamente
+POST http://localhost:8081/api/v1/tickets
+Content-Type: application/json
+
+{
+  "acao": "INSTALAR",
+  "objeto": "Workstation",
+  "detalhes": "Instalar workstation para novo colaborador",
+  "criador": "admin@example.com",
+  "destinatario": "usuario@example.com",
+  "observadores": ["suporte-ti@example.com"]
+}
+
+### Listar tickets
+GET http://localhost:8081/api/v1/tickets
+
+### Enviar notificação diretamente
+POST http://localhost:8082/api/v1/notifications
+Content-Type: application/json
+
+{
+  "destinatarios": ["suporte-ti@example.com", "usuario@example.com"],
+  "assunto": "Teste de notificação",
+  "mensagem": "Mensagem enviada pelo microsserviço de notificação."
+}
