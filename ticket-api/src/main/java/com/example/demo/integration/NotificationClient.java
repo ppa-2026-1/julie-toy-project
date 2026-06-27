@@ -22,9 +22,18 @@ public class NotificationClient {
 
     public void notificarNovoTicket(Ticket ticket) {
         List<String> interessados = new ArrayList<>();
-        interessados.add(ticket.getCriador());
-        interessados.add(ticket.getDestinatario());
-        interessados.addAll(ticket.getObservadores());
+
+        if (ticket.getCriador() != null && !ticket.getCriador().isBlank()) {
+            interessados.add(ticket.getCriador());
+        }
+
+        if (ticket.getDestinatario() != null && !ticket.getDestinatario().isBlank()) {
+            interessados.add(ticket.getDestinatario());
+        }
+
+        if (ticket.getObservadores() != null) {
+            interessados.addAll(ticket.getObservadores());
+        }
 
         NotificationRequest request = new NotificationRequest(
                 interessados.stream().distinct().toList(),

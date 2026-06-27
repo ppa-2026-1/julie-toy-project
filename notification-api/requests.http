@@ -1,0 +1,13 @@
+### NOTIFICATION API ================================================================
+
+@host=localhost:8082
+
+### Enviar notificação aos interessados
+POST http://localhost:8082/api/v1/notifications
+Content-Type: application/json
+
+{
+  "destinatarios": ["suporte-ti@example.com", "usuario@example.com"],
+  "assunto": "Novo ticket criado",
+  "mensagem": "O ticket de instalação foi criado pelo serviço de usuários."
+}

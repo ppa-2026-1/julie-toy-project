@@ -1,4 +1,4 @@
-### Criar usuário e gerar ticket automaticamente
+### USER API - criar usuário; o ticket de instalação é criado no ticket-api automaticamente
 POST http://localhost:8080/api/v1/users
 Content-Type: application/json
 
@@ -12,15 +12,18 @@ Content-Type: application/json
   "roles": []
 }
 
-### Listar usuários
+### USER API - listar usuários
 GET http://localhost:8080/api/v1/users
 
-### Criar ticket diretamente
+### USER API - listar relatórios de vulnerabilidade
+GET http://localhost:8080/api/v1/vulnerability-reports
+
+### TICKET API - criar ticket diretamente
 POST http://localhost:8081/api/v1/tickets
 Content-Type: application/json
 
 {
-  "acao": "INSTALAR",
+  "acao": "INSTALACAO",
   "objeto": "Workstation",
   "detalhes": "Instalar workstation para novo colaborador",
   "criador": "admin@example.com",
@@ -28,10 +31,22 @@ Content-Type: application/json
   "observadores": ["suporte-ti@example.com"]
 }
 
-### Listar tickets
+### TICKET API - listar tickets
 GET http://localhost:8081/api/v1/tickets
 
-### Enviar notificação diretamente
+### TICKET API - buscar ticket por id
+GET http://localhost:8081/api/v1/tickets/1
+
+### TICKET API - atualizar status do ticket
+PATCH http://localhost:8081/api/v1/tickets/1/status
+Content-Type: application/json
+
+{
+  "status": "ANDAMENTO",
+  "responsavel": "leda@example.com"
+}
+
+### NOTIFICATION API - enviar notificação diretamente
 POST http://localhost:8082/api/v1/notifications
 Content-Type: application/json
 

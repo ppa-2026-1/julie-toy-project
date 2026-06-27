@@ -19,9 +19,9 @@ public class TicketClient {
                 .build();
     }
 
-    public void ticketClient.createInstallationTicket(user){}
+    public void createInstallationTicket(User user) {
         NewTicketRequest request = new NewTicketRequest(
-                "INSTALAR",
+                "INSTALACAO",
                 "Workstation",
                 "Instalar workstation para o usuário " + user.getHandle(),
                 user.getEmail(),
@@ -36,7 +36,7 @@ public class TicketClient {
                 .toBodilessEntity();
     }
 
-    public record NewTicketRequest(
+    private record NewTicketRequest(
             String acao,
             String objeto,
             String detalhes,
