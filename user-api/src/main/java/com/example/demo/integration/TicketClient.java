@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClient;
+import org.springframework.web.client.RestClientException;
 
 import com.example.demo.repository.entity.User;
 
@@ -29,11 +30,15 @@ public class TicketClient {
                 List.of("suporte-ti@example.com")
         );
 
-        restClient.post()
-                .uri("/api/v1/tickets")
-                .body(request)
-                .retrieve()
-                .toBodilessEntity();
+        try {
+            restClient.post()
+                    .uri("/api/v1/tickets")
+                    .body(request)
+                    .retrieve()
+                    .toBodilessEntity();
+        } catch (RestClientException ex) {
+            throw new IllegalStateException("Falha ao criar ticket de instalação no ticket-api", ex);
+        }
     }
 
     private record NewTicketRequest(
