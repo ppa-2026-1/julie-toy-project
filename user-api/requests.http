@@ -1,23 +1,28 @@
-# USER API ================================================================
-
 @host=localhost:8080
 
-### TODOS OS USUÁRIOS
-GET /api/v1/users HTTP/1.1
-Host: localhost:8080
-Accept: application/json
+# AUTH API ================================================================
+
+### Login
+# @name login
+POST /auth/login HTTP/1.1
+Host: {{host}}
+Content-Type: application/json
+
+{
+    "handle": "papas"
+}
 
 
-### Get all users
-# @name= getAllUsers
-
+### Listar usuários autenticado
 GET /api/v1/users HTTP/1.1
 Host: {{host}}
 Accept: application/json
+Authorization: Bearer {{login.response.body.token}}
 
-### Create a new valid User
-# @name = createNewUser
 
+# USER API ================================================================
+
+### Criar usuário papas
 POST /api/v1/users HTTP/1.1
 Host: {{host}}
 Content-Type: application/json
@@ -34,30 +39,7 @@ Content-Type: application/json
 }
 
 
-### Try and create an invalid User
-# @name = tryCreateInvalidUser
-
-POST /api/v1/users HTTP/1.1
-Host: {{host}}
-Content-Type: application/json
-
-{
-    "email": "batata@potato.com",
-    "password": "1234",
-    "handle": "papas",
-    "name": "Kartofel",
-    "roles": [
-        "ROLE_USER"
-    ],
-    "company": "potato inc"
-}
-
-
-
-
-### Create a new valid User
-# @name = createNewUser
-
+### Criar usuário julie
 POST /api/v1/users HTTP/1.1
 Host: {{host}}
 Content-Type: application/json
@@ -74,9 +56,7 @@ Content-Type: application/json
 }
 
 
-### Create a new valid User
-# @name = createNewUser
-
+### Criar usuário leda
 POST /api/v1/users HTTP/1.1
 Host: {{host}}
 Content-Type: application/json
@@ -93,6 +73,7 @@ Content-Type: application/json
 }
 
 
+<<<<<<< Updated upstream
 # VULNERABILITY REPORTS API ================================================================
 
 ### Listar primeira página (padrão: page=1, size=10)
@@ -133,5 +114,100 @@ Accept: application/json
 
 ### [INVÁLIDO] Size acima do limite (1000)
 GET /api/v1/vulnerability-reports?page=1&size=1001 HTTP/1.1
+=======
+# TICKET API ================================================================
+
+### Listar todos os tickets
+GET /api/v1/tickets HTTP/1.1
 Host: {{host}}
 Accept: application/json
+Authorization: Bearer {{login.response.body.token}}
+
+
+### Buscar ticket por id
+GET /api/v1/tickets/1 HTTP/1.1
+Host: {{host}}
+Accept: application/json
+Authorization: Bearer {{login.response.body.token}}
+
+
+### Criar ticket válido
+POST /api/v1/tickets HTTP/1.1
+Host: {{host}}
+Content-Type: application/json
+Authorization: Bearer {{login.response.body.token}}
+
+{
+    "acao": "Aprovar",
+    "objeto": "Proposta comercial",
+    "detalhes": "Proposta enviada pelo cliente em 10/07.",
+    "criador": "julie@gmail.com",
+    "destinatario": "leda@gmail.com",
+    "observadores": [
+        "batata@gmail.com"
+    ]
+}
+
+
+### Criar ticket simples
+POST /api/v1/tickets HTTP/1.1
+Host: {{host}}
+Content-Type: application/json
+Authorization: Bearer {{login.response.body.token}}
+
+{
+    "acao": "Revisar",
+    "objeto": "Contrato de serviço",
+    "criador": "julie@gmail.com"
+}
+
+
+### Colocar ticket em andamento
+PATCH /api/v1/tickets/1/status HTTP/1.1
+Host: {{host}}
+Content-Type: application/json
+Authorization: Bearer {{login.response.body.token}}
+
+{
+    "status": "ANDAMENTO",
+    "responsavel": "leda@gmail.com"
+}
+
+
+### Resolver ticket
+PATCH /api/v1/tickets/1/status HTTP/1.1
+Host: {{host}}
+Content-Type: application/json
+Authorization: Bearer {{login.response.body.token}}
+
+{
+    "status": "RESOLVIDO"
+}
+
+
+### Cancelar ticket
+PATCH /api/v1/tickets/1/status HTTP/1.1
+Host: {{host}}
+Content-Type: application/json
+Authorization: Bearer {{login.response.body.token}}
+
+{
+    "status": "CANCELADO",
+    "motivo": "Cliente desistiu."
+}
+
+
+# LOGOUT ================================================================
+
+### Logout
+POST /auth/logout HTTP/1.1
+Host: {{host}}
+Authorization: Bearer {{login.response.body.token}}
+
+
+### Testar token após logout
+GET /api/v1/tickets HTTP/1.1
+>>>>>>> Stashed changes
+Host: {{host}}
+Accept: application/json
+Authorization: Bearer {{login.response.body.token}}
